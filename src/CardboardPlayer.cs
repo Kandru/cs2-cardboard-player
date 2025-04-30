@@ -118,6 +118,8 @@ namespace CardboardPlayer
             {
                 prop.MaxHealth = Config.PropHealth;
                 prop.Health = Config.PropHealth;
+                Utilities.SetStateChanged(prop, "CBaseEntity", "m_iHealth");
+                Utilities.SetStateChanged(prop, "CBaseEntity", "m_iMaxHealth");
                 prop.TakesDamage = true;
                 prop.TakeDamageFlags = TakeDamageFlags_t.DFLAG_ALWAYS_FIRE_DAMAGE_EVENTS;
             }
