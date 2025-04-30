@@ -36,7 +36,7 @@ namespace CardboardPlayer
         private static QAngle GetLookAtAngle(Vector source, Vector target)
         {
             // Calculate direction vector from source to target
-            Vector direction = new Vector(target.X - source.X, target.Y - source.Y, target.Z - source.Z);
+            Vector direction = new(target.X - source.X, target.Y - source.Y, target.Z - source.Z);
 
             // Calculate yaw angle (horizontal rotation)
             // atan2 returns angle in radians, convert to degrees
@@ -55,7 +55,10 @@ namespace CardboardPlayer
             // create pole prop
             CDynamicProp? prop = Utilities.CreateEntityByName<CDynamicProp>("prop_dynamic_override");
             if (prop == null
-                || !prop.IsValid) return null;
+                || !prop.IsValid)
+            {
+                return null;
+            }
             // set attributes
             prop.MoveType = MoveType_t.MOVETYPE_NONE;
             prop.Collision.SolidType = SolidType_t.SOLID_BSP;

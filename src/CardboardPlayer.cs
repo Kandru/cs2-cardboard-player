@@ -9,7 +9,7 @@ namespace CardboardPlayer
         public override string ModuleName => "CS2 CardboardPlayer";
         public override string ModuleAuthor => "Kalle <kalle@kandru.de>";
 
-        private Random _random = new();
+        private readonly Random _random = new();
         private List<CDynamicProp> _props = [];
         private IEnumerable<CBombTarget> _bombspots = [];
         private readonly List<string> _ctModels =
@@ -82,9 +82,14 @@ namespace CardboardPlayer
                 if (CheckIfVectorInsideMinsMaxs(decoyProtectile.AbsOrigin, bombspot.Collision.Mins, bombspot.Collision.Maxs))
                 {
                     if (player.Team == CsTeam.Terrorist)
+                    {
                         model = _tBombModels[_random.Next(_tBombModels.Count)];
+                    }
                     else if (player.Team == CsTeam.CounterTerrorist)
+                    {
                         model = _ctBombModels[_random.Next(_ctBombModels.Count)];
+                    }
+
                     break;
                 }
             }
@@ -92,27 +97,34 @@ namespace CardboardPlayer
             if (string.IsNullOrEmpty(model))
             {
                 if (player.Team == CsTeam.Terrorist)
+                {
                     model = _tModels[_random.Next(_tModels.Count)];
+                }
                 else if (player.Team == CsTeam.CounterTerrorist)
+                {
                     model = _ctModels[_random.Next(_ctModels.Count)];
+                }
             }
             // stop if no model found
-            if (string.IsNullOrEmpty(model)) return HookResult.Continue;
+            if (string.IsNullOrEmpty(model))
+            {
+                return HookResult.Continue;
+            }
             // create our prop
             CDynamicProp? prop;
             prop = CreateProp(model);
             // check prop
             if (prop == null
-                || !prop.IsValid) return HookResult.Continue;
+                || !prop.IsValid)
+            {
+                return HookResult.Continue;
+            }
             // teleport prop to our location
-            var vAngle = player.PlayerPawn.Value.V_angle;
-            var propAngles = new QAngle(0, vAngle.Y, 0);
+            QAngle vAngle = player.PlayerPawn.Value.V_angle;
+            QAngle propAngles = new(0, vAngle.Y, 0);
             prop.Teleport(decoyProtectile.AbsOrigin, propAngles);
             // set prop team
-            if (player.Team == CsTeam.Terrorist)
-                prop.TeamNum = (int)CsTeam.CounterTerrorist;
-            else
-                prop.TeamNum = (int)CsTeam.Terrorist;
+            prop.TeamNum = player.Team == CsTeam.Terrorist ? (byte)(int)CsTeam.CounterTerrorist : (byte)(int)CsTeam.Terrorist;
             // give prop some health
             if (Config.PropHealth > 0)
             {
@@ -124,12 +136,19 @@ namespace CardboardPlayer
                 prop.TakeDamageFlags = TakeDamageFlags_t.DFLAG_ALWAYS_FIRE_DAMAGE_EVENTS;
             }
             // add prop to list a little bit later to let prop spawn
-            AddTimer(0.1f, () =>
+            _ = AddTimer(0.1f, () =>
             {
                 if (prop == null
-                    || !prop.IsValid) return;
+                    || !prop.IsValid)
+                {
+                    return;
+                }
                 // start ontick listener
-                if (_props.Count == 0) RegisterListener<Listeners.OnTick>(OnTick);
+                if (_props.Count == 0)
+                {
+                    RegisterListener<Listeners.OnTick>(OnTick);
+                }
+
                 _props.Add(prop);
             });
             // remove grenade
@@ -150,14 +169,18 @@ namespace CardboardPlayer
             List<CDynamicProp> props = [.. _props];
             // Get AbsOrigin from each valid player and return as list of Vectors
             Dictionary<int, List<Vector>> playerPositions = [];
-            foreach (var player in Utilities.GetPlayers()
-                .Where(p => p.IsValid && !p.IsHLTV && p.PlayerPawn != null && p.PlayerPawn.IsValid && p.PlayerPawn.Value != null))
+            foreach (CCSPlayerController? player in Utilities.GetPlayers()
+                .Where(static p => p.IsValid && !p.IsHLTV && p.PlayerPawn != null && p.PlayerPawn.IsValid && p.PlayerPawn.Value != null))
             {
                 int teamNum = player.TeamNum;
-                var pos = player.PlayerPawn.Value!.AbsOrigin;
-                if (!playerPositions.ContainsKey(teamNum))
-                    playerPositions[teamNum] = new List<Vector>();
-                playerPositions[teamNum].Add(pos!);
+                Vector? pos = player.PlayerPawn.Value!.AbsOrigin;
+                if (!playerPositions.TryGetValue(teamNum, out List<Vector>? value))
+                {
+                    value = [];
+                    playerPositions[teamNum] = value;
+                }
+
+                value.Add(pos!);
             }
             foreach (CDynamicProp prop in props)
             {
@@ -182,10 +205,13 @@ namespace CardboardPlayer
                         closestPlayer = playerPos;
                     }
                 }
-                if (closestPlayer == null) continue;
+                if (closestPlayer == null)
+                {
+                    continue;
+                }
                 // look at the player
-                var baseAngle = GetLookAtAngle(prop.AbsOrigin, closestPlayer);
-                var lookAngle = new QAngle(baseAngle.X, baseAngle.Y + 90, baseAngle.Z);
+                QAngle baseAngle = GetLookAtAngle(prop.AbsOrigin, closestPlayer);
+                QAngle lookAngle = new(baseAngle.X, baseAngle.Y + 90, baseAngle.Z);
                 // change angle of prop
                 prop.Teleport(prop.AbsOrigin, lookAngle);
             }
