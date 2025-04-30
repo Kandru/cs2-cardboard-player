@@ -1,0 +1,6 @@
+{
+    "core.debugprint": "[CardboardPlayer][DEBUG]: {message}",
+    "core.config": "[CardboardPlayer] Konfiguration geladen",
+    "admin.unknown_command": "[CardboardPlayer] Unbekannter Befehl: {command}",
+    "admin.reload": "[CardboardPlayer] Konfiguration neu geladen"
+}
