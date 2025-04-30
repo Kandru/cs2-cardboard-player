@@ -13,7 +13,7 @@ namespace CardboardPlayer
         // prop health
         [JsonPropertyName("prop_health")] public int PropHealth { get; set; } = 25;
         // maximum distance to prop for movement
-        [JsonPropertyName("max_distance")] public float MaxDistance { get; set; } = 1000f;
+        [JsonPropertyName("max_distance")] public float MaxDistance { get; set; } = 300f;
     }
 
     public partial class CardboardPlayer : BasePlugin, IPluginConfig<PluginConfig>

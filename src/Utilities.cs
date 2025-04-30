@@ -50,7 +50,7 @@ namespace CardboardPlayer
             return new QAngle(0, yaw, 0);
         }
 
-        private static CDynamicProp? CreateProp(string model)
+        private CDynamicProp? CreateProp(string model)
         {
             // create pole prop
             CDynamicProp? prop = Utilities.CreateEntityByName<CDynamicProp>("prop_dynamic_override");
@@ -59,8 +59,8 @@ namespace CardboardPlayer
             // set attributes
             prop.MoveType = MoveType_t.MOVETYPE_NONE;
             prop.Collision.SolidType = SolidType_t.SOLID_BSP;
-            prop.Collision.CollisionGroup = (byte)CollisionGroup.COLLISION_GROUP_BREAKABLE_GLASS;
-            prop.Collision.CollisionAttribute.CollisionGroup = (byte)CollisionGroup.COLLISION_GROUP_BREAKABLE_GLASS;
+            prop.Collision.CollisionGroup = (byte)CollisionGroup.COLLISION_GROUP_DEBRIS;
+            prop.Collision.CollisionAttribute.CollisionGroup = (byte)CollisionGroup.COLLISION_GROUP_DEBRIS;
             prop.DispatchSpawn();
             prop.SetModel(model);
             return prop;
