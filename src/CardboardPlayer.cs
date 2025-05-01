@@ -80,8 +80,9 @@ namespace CardboardPlayer
             // check if decoyProjectile is inside a bomb spot
             foreach (CBombTarget bombspot in _bombspots)
             {
+                if (bombspot.AbsOrigin == null) continue;
                 // check if decoy grenade is inside bomb spot area
-                if (CheckIfVectorInsideMinsMaxs(decoyProtectile.AbsOrigin, bombspot.Collision.Mins, bombspot.Collision.Maxs))
+                if (CheckIfVectorInsideMinsMaxs(decoyProtectile.AbsOrigin, bombspot.AbsOrigin + bombspot.Collision.Mins, bombspot.AbsOrigin + bombspot.Collision.Maxs))
                 {
                     if (player.Team == CsTeam.Terrorist)
                     {
