@@ -31,6 +31,14 @@ namespace CardboardPlayer
         [
             "models/cs2/cardboard/peeko_dummy_t_2.vmdl"
         ];
+        private readonly List<string> _funModels =
+        [
+            "models/cs2/kandru/motorbike.vmdl"
+        ];
+        private readonly Dictionary<string, (string, float)> _soundList = new()
+        {
+            { "models/cs2/kandru/motorbike.vmdl", ("Motorbike.Engine01", 3f) }
+        };
 
         public override void Load(bool hotReload)
         {
@@ -108,6 +116,11 @@ namespace CardboardPlayer
                     model = _ctModels[_random.Next(_ctModels.Count)];
                 }
             }
+            // randomly use a fun model
+            if (_funModels.Count > 0 && _random.Next(100) < (Config.FunModelChance ?? 10))
+            {
+                model = _funModels[_random.Next(_funModels.Count)];
+            }
             // stop if no model found
             if (string.IsNullOrEmpty(model))
             {
@@ -151,8 +164,20 @@ namespace CardboardPlayer
                 {
                     RegisterListener<Listeners.OnTick>(OnTick);
                 }
-
                 _props.Add(prop);
+                // play sound if available
+                if (_soundList.TryGetValue(model, out (string sound, float delay) soundInfo))
+                {
+                    _ = AddTimer(soundInfo.delay, () =>
+                    {
+                        if (prop == null
+                            || !prop.IsValid)
+                        {
+                            return;
+                        }
+                        prop.EmitSound(soundInfo.sound);
+                    });
+                }
             });
             // remove grenade
             decoyProtectile.AcceptInput("kill");
