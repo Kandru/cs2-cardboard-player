@@ -159,12 +159,15 @@ namespace CardboardPlayer
                 {
                     return;
                 }
-                // start ontick listener
-                if (_props.Count == 0)
+                if (!_funModels.Contains(model))
                 {
-                    RegisterListener<Listeners.OnTick>(OnTick);
+                    // start ontick listener
+                    if (_props.Count == 0)
+                    {
+                        RegisterListener<Listeners.OnTick>(OnTick);
+                    }
+                    _props.Add(prop);
                 }
-                _props.Add(prop);
                 // play sound if available
                 if (_soundList.TryGetValue(model, out (string sound, float delay) soundInfo))
                 {
