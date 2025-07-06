@@ -2,6 +2,6 @@ namespace CardboardPlayer
 {
     public partial class CardboardPlayer
     {
-        public override string ModuleVersion => "0.0.8";
+        public override string ModuleVersion => "0.0.9";
     }
 }
