@@ -138,7 +138,7 @@ namespace CardboardPlayer
             }
             // teleport prop to our location
             QAngle vAngle = player.PlayerPawn.Value.V_angle;
-            QAngle propAngles = new(0, vAngle.Y + 180, 0);
+            QAngle propAngles = new(0, vAngle.Y + 90, 0);
             prop.Teleport(decoyProtectile.AbsOrigin, propAngles);
             // set prop team
             prop.TeamNum = player.Team == CsTeam.Terrorist ? (byte)(int)CsTeam.CounterTerrorist : (byte)(int)CsTeam.Terrorist;
@@ -243,7 +243,7 @@ namespace CardboardPlayer
                 }
                 // look at the player
                 QAngle baseAngle = GetLookAtAngle(prop.AbsOrigin, closestPlayer);
-                QAngle lookAngle = new(baseAngle.X, baseAngle.Y, baseAngle.Z);
+                QAngle lookAngle = new(0, baseAngle.Y + 180, 0);
                 // change angle of prop
                 prop.Teleport(prop.AbsOrigin, lookAngle);
             }
