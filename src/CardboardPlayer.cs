@@ -243,7 +243,7 @@ namespace CardboardPlayer
                 }
                 // look at the player
                 QAngle baseAngle = GetLookAtAngle(prop.AbsOrigin, closestPlayer);
-                QAngle lookAngle = new(baseAngle.X, baseAngle.Y + 90, baseAngle.Z);
+                QAngle lookAngle = new(baseAngle.X, baseAngle.Y, baseAngle.Z);
                 // change angle of prop
                 prop.Teleport(prop.AbsOrigin, lookAngle);
             }
