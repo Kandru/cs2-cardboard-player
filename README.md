@@ -6,7 +6,7 @@
 [![issues - cs2-map-modifier](https://img.shields.io/github/issues/Kandru/cs2-cardboard-player)](https://github.com/Kandru/cs2-cardboard-player/issues)
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=C2AVYKGVP9TRG)
 
-This plug-in turns the decoy grenade into a cardboard player upon exploding.
+This plug-in turns the decoy grenade into a cardboard player upon exploding. You need to specify the models on your own. The files are currently NOT public.
 
 ## Installation
 
